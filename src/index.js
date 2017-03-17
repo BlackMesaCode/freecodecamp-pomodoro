@@ -3,12 +3,13 @@ import "./custom.scss";
 import React from "react";
 import $ from "jquery";
 import ReactDOM from "react-dom";
-
+import Pomodoro from "./components/Pomodoro.js";
+import TimeSpan from "timespan";
 
 var MyApp = React.createClass({
     render: function() {
         return (
-            <h1>Up and running :-)</h1>
+            <Pomodoro workingTime={TimeSpan.fromSeconds(6)} pauseTime={TimeSpan.fromSeconds(3)} />
         );
     }
 });
