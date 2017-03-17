@@ -30,13 +30,13 @@ export default class Pomodoro extends React.Component {
                 if (this.state.currentPhase === "Working") {
                     this.setState({
                         currentPhase: "Pause",
-                        timeLeft: TimeSpan.fromSeconds(3)
+                        timeLeft: this.state.pauseTime // TODO antipattern, use callback
                     });
                 }
                 else {
                     this.setState({
                         currentPhase: "Working",
-                        timeLeft: TimeSpan.fromSeconds(6)
+                        timeLeft: this.state.workingTime
                     });
                 }
             }
@@ -49,13 +49,20 @@ export default class Pomodoro extends React.Component {
         });
     }
 
-    adjustDuration(newDuration, phase) {
+    adjustDuration(operation, phase) {
+        
         if (phase === "Working") {
+            let newDuration = TimeSpan.clone(this.state.workingTime)
+            if (operation === "increase") newDuration.addSeconds(1); else newDuration.subtractSeconds(1);
+
             this.setState({
                 workingTime: newDuration,
             });
         }
         else {
+            let newDuration = TimeSpan.clone(this.state.pauseTime)
+            if (operation === "increase") newDuration.addSeconds(1); else newDuration.subtractSeconds(1);
+
             this.setState({
                 pauseTime: newDuration,
             });
@@ -69,8 +76,8 @@ export default class Pomodoro extends React.Component {
                 <Countdown timeLeft={this.state.timeLeft} paused={this.state.paused} toggleCountdown={this.toggleCountdown.bind(this)} 
                 currentPhase={this.state.currentPhase}
                 />
-                {/*<AdjustDuration type="Working" adjustDuration={this.adjustDuration.bind(this)} currentDuration={this.state.workingTime}/>
-                <AdjustDuration type="Pause" adjustDuration={this.adjustDuration.bind(this)} currentDuration={this.state.pauseTime}/>*/}
+                <AdjustDuration type="Working" adjustDuration={this.adjustDuration.bind(this)} currentDuration={this.state.workingTime}/>
+                <AdjustDuration type="Pause" adjustDuration={this.adjustDuration.bind(this)} currentDuration={this.state.pauseTime}/>
             </div>
         )
     }
