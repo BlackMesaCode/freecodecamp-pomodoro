@@ -7,22 +7,22 @@ import AdjustDuration from "./AdjustDuration.js";
 export default class Pomodoro extends React.Component {
     constructor(props) {
         super(props);
-        this.state = this.getInitalState();
-        this.startTimer();
-    }
-
-    getInitalState() {
-        return {
+        this.state = {
             timeLeft: this.props.workingTime,
             paused: true,
             currentPhase: "Working",
             workingTime: this.props.workingTime,
             pauseTime: this.props.pauseTime
         };
+        this.startTimer();
     }
 
     reset() {
-        this.setState(this.getInitalState());
+        this.setState({
+            timeLeft: this.state.workingTime,
+            paused: true,
+            currentPhase: "Working",
+        });
     }
 
     startTimer() {
@@ -72,14 +72,13 @@ export default class Pomodoro extends React.Component {
         }
 
         if (phase === "Working") {
-            this.setState({
-                workingTime: durationCopy,
-            });
+            this.setState({ workingTime: durationCopy });
+            if (this.state.paused) {
+                this.setState({ timeLeft: durationCopy });
+            }
         }
         else {
-            this.setState({
-                pauseTime: durationCopy,
-            });
+            this.setState({ pauseTime: durationCopy });
         }
     }
 
