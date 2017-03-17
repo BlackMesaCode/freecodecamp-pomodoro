@@ -65,9 +65,10 @@ export default class Pomodoro extends React.Component {
     adjustDuration(operation, phase) {
         let durationCopy = phase === "Working" ? TimeSpan.clone(this.state.workingTime) : TimeSpan.clone(this.state.pauseTime)
 
-        if (operation === "increase") 
-            durationCopy.addMinutes(1); 
-        else if (durationCopy.totalMinutes() > 1) {
+        if (operation === "increase" && durationCopy.totalMinutes() < 59) {
+            durationCopy.addMinutes(1);
+        }
+        else if (operation === "decrease" && durationCopy.totalMinutes() > 1) {
             durationCopy.subtractMinutes(1);
         }
 
