@@ -1,5 +1,6 @@
 import '../node_modules/font-awesome/css/font-awesome.min.css';
-import "./custom.scss";
+import "./index.scss";
+
 import React from "react";
 import $ from "jquery";
 import ReactDOM from "react-dom";
@@ -9,7 +10,7 @@ import TimeSpan from "timespan";
 var MyApp = React.createClass({
     render: function() {
         return (
-            <Pomodoro workingTime={TimeSpan.fromSeconds(6)} pauseTime={TimeSpan.fromSeconds(3)} />
+            <Pomodoro workingTime={TimeSpan.fromMinutes(25)} pauseTime={TimeSpan.fromMinutes(5)} />
         );
     }
 });

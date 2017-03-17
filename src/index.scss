@@ -1,7 +1,16 @@
 @import "../node_modules/normalize.css/normalize.css";
 @import "../node_modules/boilerplate-styles/styles/boilerplate.scss";
+@import "./components/Pomodoro.scss";
 
-
+body {
+    background-image: url("./images/bg.png");
+    background-repeat: repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align:  center;
+    font-family: 'Roboto Condensed', sans-serif;
+}
 
 
 #profiles {

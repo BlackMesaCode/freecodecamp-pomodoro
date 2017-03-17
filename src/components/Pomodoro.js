@@ -1,19 +1,31 @@
 import React from "react";
-import Countdown from "./Countdown.js";
+import Countdown from "./Countdown.js";  // https://www.npmjs.com/package/timespan
 import TimeSpan from "timespan";
 import AdjustDuration from "./AdjustDuration.js";
+
 
 export default class Pomodoro extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = this.getInitalState();
+        this.startTimer();
+    }
+
+    getInitalState() {
+        return {
             timeLeft: this.props.workingTime,
-            paused: false,
+            paused: true,
             currentPhase: "Working",
             workingTime: this.props.workingTime,
             pauseTime: this.props.pauseTime
-        }
+        };
+    }
 
+    reset() {
+        this.setState(this.getInitalState());
+    }
+
+    startTimer() {
         this.timer = setInterval(function() {
             if (this.state.timeLeft.totalSeconds() > 0) {
                 if (!this.state.paused) {
@@ -41,6 +53,7 @@ export default class Pomodoro extends React.Component {
                 }
             }
         }.bind(this), 1000);
+
     }
 
     toggleCountdown() {
@@ -50,32 +63,32 @@ export default class Pomodoro extends React.Component {
     }
 
     adjustDuration(operation, phase) {
-        
-        if (phase === "Working") {
-            let newDuration = TimeSpan.clone(this.state.workingTime)
-            if (operation === "increase") newDuration.addSeconds(1); else newDuration.subtractSeconds(1);
+        let durationCopy = phase === "Working" ? TimeSpan.clone(this.state.workingTime) : TimeSpan.clone(this.state.pauseTime)
 
+        if (operation === "increase") 
+            durationCopy.addMinutes(1); 
+        else if (durationCopy.totalMinutes() > 1) {
+            durationCopy.subtractMinutes(1);
+        }
+
+        if (phase === "Working") {
             this.setState({
-                workingTime: newDuration,
+                workingTime: durationCopy,
             });
         }
         else {
-            let newDuration = TimeSpan.clone(this.state.pauseTime)
-            if (operation === "increase") newDuration.addSeconds(1); else newDuration.subtractSeconds(1);
-
             this.setState({
-                pauseTime: newDuration,
+                pauseTime: durationCopy,
             });
         }
     }
 
     render() {
         return (
-            <div>
-                <h1>Pomodoro Clock</h1>
+            <div id="pomodoro">
+                <p>Pomodoro Clock</p>
                 <Countdown timeLeft={this.state.timeLeft} paused={this.state.paused} toggleCountdown={this.toggleCountdown.bind(this)} 
-                currentPhase={this.state.currentPhase}
-                />
+                currentPhase={this.state.currentPhase} reset={this.reset.bind(this)} />
                 <AdjustDuration type="Working" adjustDuration={this.adjustDuration.bind(this)} currentDuration={this.state.workingTime}/>
                 <AdjustDuration type="Pause" adjustDuration={this.adjustDuration.bind(this)} currentDuration={this.state.pauseTime}/>
             </div>
