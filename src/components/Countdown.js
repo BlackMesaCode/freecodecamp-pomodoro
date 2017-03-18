@@ -18,3 +18,10 @@ export default function Countdown(props) {
         </div>
     );
 }
+
+Countdown.propTypes = {
+    currentPhase: React.PropTypes.string.isRequired,
+    timeLeft: React.PropTypes.object.isRequired,
+    toggleCountdown: React.PropTypes.func.isRequired,
+    paused: React.PropTypes.bool.isRequired
+}

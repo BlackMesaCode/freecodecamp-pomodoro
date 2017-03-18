@@ -13,3 +13,9 @@ export default function AdjustDuration(props) {
         </div>
     );
 }
+
+AdjustDuration.propTypes = {
+    type: React.PropTypes.string.isRequired,
+    currentDuration: React.PropTypes.object.isRequired,
+    adjustDuration: React.PropTypes.func.isRequired
+}
