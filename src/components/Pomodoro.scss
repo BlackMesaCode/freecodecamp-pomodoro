@@ -7,10 +7,19 @@
     font-style: normal;
 }
 
+#app {
+    // min-width: 0;  // would allow the #app to shrink beyond content-size (e.g. if window gets smaller than content size)
+    // see:  http://stackoverflow.com/questions/38382734/flex-items-not-shrinking-when-window-gets-smaller
+    // and: http://stackoverflow.com/questions/36247140/why-doesnt-flex-item-shrink-past-content-size
+    flex-basis: 16rem;
+    flex-shrink: 1;
+}
+
 #pomodoro {
     background-color: $white;
     padding: 1.5rem;
     border-radius: 1rem;
+    
 }
 
 #timeleft {
